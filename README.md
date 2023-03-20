@@ -1,6 +1,6 @@
-# ROSNeuro Butterworth filter
+# ROS-Neuro Butterworth filter
 
-This ROSNeuro filter plugin implements a IIR Butterworth filter for real-time operations. It directly exploits the [rtfilter library](https://packages.debian.org/search?keywords=librtfilter-dev).
+This ROS-Neuro filter plugin implements a IIR Butterworth filter for real-time operations. It directly exploits the [rtfilter library](https://packages.debian.org/search?keywords=librtfilter-dev).
 
 ## Requirements:
 - [librtfilter](https://packages.debian.org/search?keywords=librtfilter-dev)
