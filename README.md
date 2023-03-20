@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
   int nsamples  = input.rows();
   int nchannels = input.cols();
 
-  // Allocate matrix for lowpass, highpass, and bandpass data
+  // Allocate matrix for lowpass and highpass
   rosneuro::DynamicMatrix<double> outlp = rosneuro::DynamicMatrix<double>::Zero(nsamples, nchannels);
   rosneuro::DynamicMatrix<double> outhp = rosneuro::DynamicMatrix<double>::Zero(nsamples, nchannels);
 	
