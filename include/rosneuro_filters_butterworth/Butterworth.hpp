@@ -4,6 +4,7 @@
 #include <Eigen/Dense>
 #include <rtf_common.h>
 #include <rtfilter.h>
+#include <gtest/gtest_prod.h>
 #include <rosneuro_filters/Filter.hpp>
 
 namespace rosneuro {
@@ -42,6 +43,12 @@ class Butterworth: public Filter<T> {
 		
 		bool is_filter_configured_;
 		bool is_filter_set_;
+
+    FRIEND_TEST(ButterworthTestSuite, Constructor);
+    FRIEND_TEST(ButterworthTestSuite, ConstructorWithParameters);
+    FRIEND_TEST(ButterworthTestSuite, Configure);
+    FRIEND_TEST(ButterworthTestSuite, Setters);
+    FRIEND_TEST(ButterworthTestSuite, Apply);
 };
 
 template<typename T>

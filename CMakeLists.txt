@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 			 pluginlib
 			 rosneuro_filters)
 
+find_package(GTest REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_library(RTF_LIBRARIES rtfilter)
 find_path(RTF_INCLUDE_DIRS rtfilter.h)
@@ -26,7 +27,8 @@ SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 include_directories(${catkin_INCLUDE_DIRS} 
                     ${EIGEN3_INCLUDE_DIRS}
 					${RTF_INCLUDE_DIRS}
-					include)
+					include
+                    include/${PROJECT_NAME}/)
 
 
 ##############################################################################
@@ -64,6 +66,12 @@ target_link_libraries(${PROJECT_NAME} 	${Eigen3_LIBRARIES}
 #################
 ## Executables ##
 #################
+
+
+catkin_add_gtest(TestButterworth test/test_butterworth.cpp)
+target_link_libraries(TestButterworth ${GTEST_BOTH_LIBRARIES} pthread gmock ${Eigen3_LIBRARIES})
+target_link_libraries(TestButterworth ${PROJECT_NAME} ${catkin_LIBRARIES} yaml-cpp)
+include_directories(${GTEST_INCLUDE_DIRS} gmock pthread include include/${PROJECT_NAME}/ yaml-cpp)
 
 add_executable(butterworth_simloop test/butterworth_simloop.cpp)
 target_link_libraries(butterworth_simloop ${PROJECT_NAME} ${catkin_LIBRARIES}) 
