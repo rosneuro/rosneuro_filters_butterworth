@@ -68,18 +68,18 @@ target_link_libraries(${PROJECT_NAME} 	${Eigen3_LIBRARIES}
 #################
 
 
-catkin_add_gtest(TestButterworth test/test_butterworth.cpp)
+catkin_add_gtest(TestButterworth test/TestButterworth.cpp)
 target_link_libraries(TestButterworth ${GTEST_BOTH_LIBRARIES} pthread gmock ${Eigen3_LIBRARIES})
 target_link_libraries(TestButterworth ${PROJECT_NAME} ${catkin_LIBRARIES} yaml-cpp)
 include_directories(${GTEST_INCLUDE_DIRS} gmock pthread include include/${PROJECT_NAME}/ yaml-cpp)
 
-add_executable(butterworth_simloop test/butterworth_simloop.cpp)
+add_executable(butterworth_simloop example/butterworth_simloop.cpp)
 target_link_libraries(butterworth_simloop ${PROJECT_NAME} ${catkin_LIBRARIES}) 
 
-add_executable(butterworth_simloop_config test/butterworth_simloop_config.cpp)
+add_executable(butterworth_simloop_config example/butterworth_simloop_config.cpp)
 target_link_libraries(butterworth_simloop_config ${PROJECT_NAME} ${catkin_LIBRARIES}) 
 
-add_executable(butterworth_simloop_chain test/butterworth_simloop_chain.cpp)
+add_executable(butterworth_simloop_chain example/butterworth_simloop_chain.cpp)
 target_link_libraries(butterworth_simloop_chain ${PROJECT_NAME} ${catkin_LIBRARIES}) 
 
 
