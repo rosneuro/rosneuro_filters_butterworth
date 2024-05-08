@@ -1,5 +1,7 @@
 #include "Butterworth.hpp"
 #include <gtest/gtest.h>
+#include <ros/package.h>
+#include <rosneuro_filters/rosneuro_filters_utilities.hpp>
 
 namespace rosneuro {
 
@@ -97,6 +99,44 @@ TEST_F(ButterworthTestSuite, Apply){
 
     bw_filter->is_filter_configured_ = false;
     EXPECT_THROW(bw_filter->apply(in), std::runtime_error);
+}
+
+TEST_F(ButterworthTestSuite, Integration){
+    int frame_size = 32;
+    double sample_rate = 512;
+    int order_lp = 4;
+    int order_hp = 4;
+    double cutoff_lp = 10;
+    double cutoff_hp = 1;
+
+    std::string base_path = ros::package::getPath("rosneuro_filters_butterworth");
+    const std::string input_path  = base_path + "/test/rawdata.csv";
+    const std::string path_expected_lp  = base_path + "/test/expected_lp.csv";
+    const std::string path_expected_hp  = base_path + "/test/expected_hp.csv";
+
+    DynamicMatrix<double> input = readCSV<double>(input_path);
+    DynamicMatrix<double> expected_lp = readCSV<double>(path_expected_lp);
+    DynamicMatrix<double> expected_hp = readCSV<double>(path_expected_hp);
+
+    int nsamples  = input.rows();
+    int nchannels = input.cols();
+
+    DynamicMatrix<double> output_lp = DynamicMatrix<double>::Zero(nsamples, nchannels);
+    DynamicMatrix<double> output_hp = DynamicMatrix<double>::Zero(nsamples, nchannels);
+
+    Butterworth<double> butter_lp(ButterType::LowPass,  order_lp, cutoff_lp, sample_rate);
+    Butterworth<double> butter_hp(ButterType::HighPass, order_hp, cutoff_hp, sample_rate);
+
+    DynamicMatrix<double> frame = DynamicMatrix<double>::Zero(frame_size, nchannels);
+
+    for(auto i = 0; i<nsamples; i = i+frame_size) {
+        frame = input.middleRows(i, frame_size);
+        output_lp.middleRows(i, frame_size) = butter_lp.apply(frame);
+        output_hp.middleRows(i, frame_size) = butter_hp.apply(frame);
+    }
+
+    ASSERT_TRUE(expected_hp.isApprox(output_hp, 1e-6));
+    ASSERT_TRUE(expected_lp.isApprox(output_lp, 1e-6));
 }
 
 }
